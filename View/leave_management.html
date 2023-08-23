@@ -1,0 +1,215 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <br>
+    <br>
+    <br>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item " aria-current="page" role="presentation">
+            <a class="nav-link active" data-toggle="tab" href="#LeaveEntry" style="color: #495057">Leave Entry</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" data-toggle="tab" href="#LeaveSettings" style="color: #495057">Leave Settings</a>
+        </li>
+    </ul>
+    <br>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="LeaveEntry" role="tabpanel" aria-labelledby="home-tab">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Name :
+                            <span id="personnel_name" class="badge badge-primary badge-pill">{{ current_personnel.name }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Surname :
+                            <span id="personnel_surname" class="badge badge-primary badge-pill">{{ current_personnel.surname }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            E-Mail :
+                            <span class="badge badge-primary badge-pill">{{ current_personnel.email }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Department :
+                            <span class="badge badge-primary badge-pill">{{ current_personnel.department.name }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Total Annual Leave :
+                            <span class="badge badge-primary badge-pill">{{current_personnel.total_annual_leave|int}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Leave Used :
+                            <span id="total_leave_used" class="badge badge-primary badge-pill">{{ current_personnel.getTotalUsed()}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Leave Left :
+                            <span id="leave_left" class="badge badge-primary badge-pill">{{ current_personnel.getTotalLeft() }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Status :
+                            <span id="personnel_status" class="badge badge-primary badge-pill">{{current_personnel.getStatus()}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    {% if current_personnel.getTotalLeft() >= 0.5 %}
+                        <form id="new_leave_form">
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="datepicker">Start Date: </label>
+                                    <div id="datepicker"
+                                         class="input-group date"
+                                         data-date-format="dd/mm/yyyy">
+                                        <input id="start" name="start" class="form-control"
+                                               type="text" readonly/>
+                                        <span class="input-group-addon">
+
+                    </span>
+                                    </div>
+                                </div>
+
+                                <div class="col form-group">
+                                    <label for="datepicker2">End Date: </label>
+                                    <div id="datepicker2"
+                                         class="input-group date"
+                                         data-date-format="dd/mm/yyyy">
+                                        <input id="end" name="end" class="form-control"
+                                               type="text" readonly/>
+                                        <span class="input-group-addon">
+
+                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="hour"
+                                               id="start_radio_morning" value="09:00" checked>
+                                        <label class="form-check-label" for="hour">
+                                            Morning
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="hour"
+                                               id="start_radio_afternoon" value="13:00">
+                                        <label class="form-check-label" for="hour">
+                                            Afternoon
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="hour2"
+                                               id="end_radio_morning" value="09:00" checked>
+                                        <label class="form-check-label" for="hour2">
+                                            Morning
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="hour2"
+                                               id="end_radio_afternoon" value="13:00">
+                                        <label class="form-check-label" for="hour2">
+                                            Afternoon
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                             <input type="hidden"  name="operation" value="Add">
+                             <input type="hidden"  name="id_personnel" value="{{ current_personnel.id}}">
+                            <button id="btn_add" type="button"  class="btn btn-outline-secondary">Save</button>
+                            <p id="feedback_text" class="form-text" style="display: none"></p>
+                        </form>
+                    {% else %}
+                        <p id="info-leave"> The personnel has no annual leave left.</p>
+                    {% endif %}
+
+
+                </div>
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="LeaveSettings" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="card">
+                <div class="card-header">
+                    <div class="form-group">
+                        <label for="select_tip">Filter : </label>
+                        <select id="select_type" class="form-control">
+                            <option value="Active">Only Active Leaves</option>
+                            <option value="Completed">Only Completed Leaves</option>
+                            <option value="Unstarted">Only Unstarted Leaves</option>
+                            <option value="All" selected>All Leaves </option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="card-body" id="card_body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" style="text-align: center"></th>
+                                <th scope="col" style="text-align: center"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="leave_table">
+                            {% set leaveTable = current_personnel.getLeaveTable() %}
+                            {% for leave in leaveTable.keys() %}
+                                 <tr id="leave_row_{{leave.id}}" class="{{leaveTable[leave].lower()}}-row">
+                                    <td id="start_column_{{leave.id}}" class="control-start" style="vertical-align: middle">{{ leave.start_day }}</td>
+                                    <td id="end_column_{{leave.id}}"  class="control-end" style="vertical-align: middle">{{ leave.end_day }}</td>
+                                    <td id="status_column_{{leave.id}}" style="vertical-align: middle">{{leaveTable[leave] }}</td>
+                                     <td style="text-align: center;vertical-align: middle">
+                                        <button id="modal_open_{{ leave.id }}" type="button" class="btn btn-outline-success btn-sm modal-open" data-toggle="modal"
+                                                data-target="#modal-for-{{ leave.id }}" onclick="window.cloneModal({{ leave.id }})"> Update
+                                        </button>
+
+                                    </td>
+                                    <td>
+                                        <button id ="btn_delete_{{leave.id}}" type="button" class="btn btn-outline-danger btn-sm btn-leave-submit" onclick="window.deleteLeave({{ leave.id }},'{{leaveTable[leave]}}')">
+                                        Delete
+                                        </button>
+
+                                    </td>
+                                    <form action="leave_management.html" id="form_delete_{{leave.id}}">
+                                       <input type="hidden"  name="total_days" value="{{ leave.total_days }}">
+                                       <input type="hidden"  name="id_leave" value="{{ leave.id }}">
+                                       <input type="hidden"  name="id_personnel" value="{{current_personnel.id}}">
+                                       <input type="hidden"  name="personnel_status" value="{{current_personnel.getStatus()}}">
+                                       <input type="hidden"  name="operation" value="Delete">
+                                    </form>
+                                 </tr>
+                                {% with leave = leave,status=leaveTable[leave] %}
+                                    {% include "includes/modal.html" %}
+                                {% endwith %}
+                            {% endfor %}
+                    </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

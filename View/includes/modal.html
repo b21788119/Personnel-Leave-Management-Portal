@@ -1,0 +1,157 @@
+<div class="modal fade" id="modal-for-{{ leave.id }}" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Update Leave</h5>
+            </div>
+            <div class="modal-body">
+                {% if status!= "Completed" %}
+                    <form id="update_form_{{ leave.id }}">
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <label for="modal_datepicker-{{ leave.id }}-1">Start Date: </label>
+                                <div id="modal_datepicker-{{ leave.id  }}-1"
+                                     class="input-group date modal_picker_start"
+                                     data-date-format="dd/mm/yyyy">
+                                    {% if status=="Active" %}
+                                        <input id="update_start_{{ leave.id  }}" name="start"
+                                               class="form-control"
+                                               type="text" value="{{ leave.start_day.split(" ")[0]}}" readonly disabled/>
+                                    {% elif status=="Unstarted" %}
+                                        <input id="update_start_{{ leave.id  }}" name="start"
+                                               class="form-control"
+                                               type="text" value="{{ leave.start_day.split(" ")[0]}}" readonly/>
+                                    {% endif %}
+                                    <span class="input-group-addon">
+
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col form-group">
+                                <label for="modal_datepicker-{{ leave.id }}-2">End Date: </label>
+                                <div id="modal_datepicker-{{ leave.id }}-2"
+                                     class="input-group date modal_picker_end"
+                                     data-date-format="dd/mm/yyyy">
+                                    <input id="update_end_{{ leave.id }}" name="end" class="form-control"
+                                           type="text" value="{{ leave.end_day.split(" ")[0]}}" readonly/>
+                                    <span class="input-group-addon">
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <div class="form-check">
+                                    {% if status=="Active" %}
+                                        {% if leave.start_day.split(" ")[1][:2] == "09" %}
+                                            <input class="form-check-input" type="radio" name="hour" value="09:00"
+                                                   id="start_radio_morning_update_{{ leave.id }}" checked
+                                                   disabled>
+                                        {% else %}
+                                            <input class="form-check-input" type="radio" name="hour" value="09:00"
+                                                   id="start_radio_morning_update_{{ leave.id }}" disabled>
+
+                                        {% endif %}
+                                    {% elif status=="Unstarted" %}
+                                        {% if leave.start_day.split(" ")[1][:2] == "09" %}
+                                            <input class="form-check-input" type="radio" name="hour" value="09:00"
+                                                   id="start_radio_morning_update_{{ leave.id }}" checked>
+                                        {% else %}
+                                            <input class="form-check-input" type="radio" name="hour" value="09:00"
+                                                   id="start_radio_morning_update_{{ leave.id }}" >
+
+                                        {% endif %}
+                                    {% endif %}
+                                    <label class="form-check-label" for="hour">
+                                        Morning
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    {% if status=="Active" %}
+                                        {% if leave.start_day.split(" ")[1][:2] == "13" %}
+                                            <input class="form-check-input" type="radio" name="hour" value="13:00"
+                                                   id="start_radio_afternoon_update_{{ leave.id }}" checked
+                                                   disabled>
+                                        {% else %}
+                                            <input class="form-check-input" type="radio" name="hour" value="13:00"
+                                                   id="start_radio_afternoon_update_{{ leave.id }}" disabled>
+
+                                        {% endif %}
+
+                                    {% elif status=="Unstarted" %}
+                                        {% if leave.start_day.split(" ")[1][:2] == "13" %}
+                                            <input class="form-check-input" type="radio" name="hour" value="13:00"
+                                                   id="start_radio_afternoon_update_{{ leave.id }}" checked>
+                                        {% else %}
+                                            <input class="form-check-input" type="radio" name="hour" value="13:00"
+                                                   id="start_radio_afternoon_update_{{ leave.id }}" >
+
+                                        {% endif %}
+                                    {% endif %}
+                                    <label class="form-check-label" for="hour">
+                                        Afternoon
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col form-group">
+                                <div class="form-check">
+                                    {% if leave.end_day.split(" ")[1][:2] == "09" %}
+                                        <input class="form-check-input" type="radio" name="hour2" value="09:00"
+                                               id="end_radio_morning_update_{{ leave.id }}" checked>
+                                    {% else %}
+                                        <input class="form-check-input" type="radio" name="hour2" value="09:00"
+                                               id="end_radio_morning_update_{{ leave.id }}">
+
+                                    {% endif %}
+                                    <label class="form-check-label" for="hour2">
+                                        Morning
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    {% if leave.end_day.split(" ")[1][:2] == "13" %}
+                                        <input class="form-check-input" type="radio" name="hour2" value="13:00"
+                                               id="end_radio_afternoon_update_{{ leave.id }}" checked>
+                                    {% else %}
+                                        <input class="form-check-input" type="radio" name="hour2" value="13:00"
+                                               id="end_radio_afternoon_update_{{ leave.id }}">
+
+                                    {% endif %}
+                                    <label class="form-check-label" for="flexRadioDefault4">
+                                        Afternoon
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <input type="hidden" name="operation" value="Update">
+                        <input type="hidden" name="id_leave" value="{{ leave.id }}">
+                        <input type="hidden" name="id_personnel" value="{{ leave.owner }}">
+                        <input type="hidden" name="leave_status" value="{{ status }}">
+                        <input type="hidden" name="total_days" value="{{ leave.total_days }}">
+                        <p id="feedback_text_{{ leave.id }}" class="form-text" style="display: none"></p>
+                    </form>
+                {% else %}
+                    Update operation is not enabled for completed leaves.
+                {% endif %}
+            </div>
+
+            <div class="modal-footer">
+                {% if status != "Completed" %}
+                    <button id="btn_close_{{ leave.id }}" type="button" class="btn btn-secondary modal-close-btn"
+                            data-dismiss="modal" onclick="window.replaceWithClone({{ leave.id }})">Close
+                    </button>
+                    <button id="btn_update_{{ leave.id }}" type="button" class="btn btn-primary btn-leave-submit" onclick="window.updateLeave({{ leave.id }})">
+                        Save
+                    </button>
+                {% else %}
+                    <button id="btn_close_{{ leave.id }}" type="button" class="btn btn-secondary modal-close-btn"
+                            data-dismiss="modal">Close
+                    </button>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>

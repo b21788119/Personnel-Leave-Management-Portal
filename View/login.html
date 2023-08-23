@@ -1,0 +1,41 @@
+
+{% set now = now%}
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="row align-items-center" style="height: 100vh;">
+        <div class="mx-auto col-10 col-md-8 col-lg-6">
+            {% include "includes/messages.html" %}
+            <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                  <h3 class="card-header text-center" style="vertical-align: center;color:darkslategray">Leave Management Portal
+                  </h3>
+                  <div class="card-body">
+                      <form method="post" action="/">
+                <div class="form-group">
+                    <label for="exampleInputName">Name</label>
+                    <input type="text" class="form-control" name="name" id="exampleInputName" aria-describedby="nameHelp" placeholder="Enter your name"  required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputSurname">Surname</label>
+                    <input type="text" class="form-control" name="surname" id="exampleInputName" aria-describedby="surnameHelp" placeholder="Enter your surname"  required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your e-mail address" required>
+                </div>
+                 <div class="form-group">
+                    <label for="exampleInputDepartment">Department</label>
+                    <input type="text" class="form-control" name="department" id="exampleInputDepartman" aria-describedby="surnameHelp" placeholder="Enter your department"  required>
+                    <small id="emailHelp" class="form-text text-muted" style="display: none">We'll never share your email with anyone else.</small>
+                </div>
+                <button type="submit" class="btn btn-outline-secondary btn-lg btn-block">Submit</button>
+            </form>
+
+                  </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

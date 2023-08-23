@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <br>
+    <br>
+    <br>
+    {% include "includes/messages.html" %}
+    <div class="card">
+      <div class="card-header">
+
+          <div class="row" style="display: flex;justify-content: space-between;margin: auto">
+                    <div class="input-group-sm">
+                        <h3><span class="badge badge-light">Personnel List</span></h3>
+                    </div>
+
+                    <div>
+                      <form>
+                          <div class="form-row pt-1">
+                              <div class="col input-group-sm">
+                                   <select class="form-control mb-2" id="department-filter">
+                                        <option value="All" selected>All Departments</option>
+                                        <option value="Satış">Satış</option>
+                                        <option value="Ar-Ge">Ar-Ge</option>
+                                        <option value="İnsan Kaynakları">İnsan Kaynakları</option>
+                                        <option value="Lojistik">Lojistik</option>
+                                        <option value="Pazarlama">Pazarlama</option>
+                                        <option value="Üretim">Üretim</option>
+                                        <option value="Muhasebe">Muhasebe</option>
+                                        <option value="Bilgi Teknolojileri">Bilgi Teknolojileri</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                  <div class="input-group input-group-sm mb-2">
+                                    <div class="input-group-prepend">
+                                      <div class="input-group-text">Search</div>
+                                    </div>
+                                    <input id="search-btn" type="text" class="form-control" id="inlineFormInputGroup" placeholder="">
+                                  </div>
+                                </div>
+                          </div>
+                        </form>
+                    </div>
+            </div>
+      </div>
+      <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" style="vertical-align: middle">Name</th>
+                  <th scope="col" style="vertical-align: middle">Surname</th>
+                  <th scope="col" style="vertical-align: middle">E-Mail</th>
+                    <th scope="col" style="vertical-align: middle">Department</th>
+                    <th scope="col" style="text-align: center;white-space: nowrap;vertical-align: middle"></th>
+                </tr>
+              </thead>
+              <tbody id="personnel_list_table">
+                 {% for personnel in all_personnel %}
+                    <tr class="list">
+                        <th scope="row">{{personnel.name}}</th>
+                        <td>{{personnel.surname}}</td>
+                        <td>{{personnel.email}}</td>
+                        <td>{{personnel.department.name}}</td>
+                        <td style="text-align: center">
+                            <a href="/leaveManagement/{{personnel.id}}" class="btn btn-outline-secondary btn-sm" role="button"><i class="fa fa-cogs" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+        </table>
+      </div>
+    </div>
+    <br>
+
+{% endblock %}
+
+
