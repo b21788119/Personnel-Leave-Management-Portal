@@ -55,7 +55,7 @@
               </thead>
               <tbody id="personnel_list_table">
                  {% for personnel in all_personnel %}
-                    <tr class="list">
+                    <tr class="list {{personnel.department.name.lower()}}">
                         <th scope="row">{{personnel.name}}</th>
                         <td>{{personnel.surname}}</td>
                         <td>{{personnel.email}}</td>

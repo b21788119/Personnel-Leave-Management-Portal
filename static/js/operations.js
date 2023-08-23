@@ -4,6 +4,7 @@ import Swal from 'sweetalert2'
 $.noConflict();
 
 var modal_clone;  // Global variable to restore the state of the modals after user interacts them.
+var department_filter = "all"; // Global variable to keep track of filter operations.
 
 // Constant structure to be used in the validation modals of the sweetalert.
 const swalWithBootstrapButtons = Swal.mixin({
@@ -442,21 +443,6 @@ function filterLeaves(){
 
 }
 
-function filterPersonnelByDepartment(){
-  // Filtering the personnel according to the department value of the select element located on panel page
-   jQuery("#department-filter").on("change",(function(){
-     var department = jQuery("#department-filter").val().toLowerCase();
-     if(department != "all"){
-        jQuery("#personnel_list_table .list").filter(function() {
-          jQuery(this).toggle(jQuery(this).text().toLowerCase().indexOf(department) > -1);
-    });
-     }
-     else {
-       jQuery("#personnel_list_table .list").show();
-     }
-   }));
-}
-
 
 function checkLeaveEntry(form){
   let today =  new Date(new Date().toDateString()).getTime();
@@ -627,10 +613,35 @@ function activateSearch(){
   // Filtering the rows on the panel according to the entered values on the input field.
   jQuery("#search-btn").on("keyup", function() {
     var value = jQuery(this).val().toLowerCase();
-    jQuery("#personnel_list_table .list").filter(function() {
-      jQuery(this).toggle(jQuery(this).text().toLowerCase().indexOf(value) > -1)
+    var selector = "";
+    if(department_filter === "all"){
+      selector = `#personnel_list_table .list`;
+    }
+    else{
+      selector = `#personnel_list_table .${department_filter}`;
+    }
+
+    jQuery(selector).filter(function() {
+        jQuery(this).toggle(jQuery(this).text().toLowerCase().indexOf(value) > -1);
     });
+
   });
 
+}
 
+function filterPersonnelByDepartment(){
+  // Filtering the personnel according to the department value of the select element located on panel page
+   jQuery("#department-filter").on("change",(function(){
+     jQuery("#search-btn").val("");
+     var department = jQuery("#department-filter").val().toLowerCase();
+     department_filter = department;
+     if(department != "all"){
+        jQuery("#personnel_list_table .list").filter(function() {
+            jQuery(this).toggle(jQuery(this).text().toLowerCase().indexOf(department) > -1);
+    });
+     }
+     else {
+       jQuery("#personnel_list_table .list").show();
+     }
+   }));
 }
