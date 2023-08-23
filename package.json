@@ -1,0 +1,21 @@
+{
+  "name": "personnel-leave-management-portal",
+  "version": "1.0.0",
+  "description": "Kafein Technology Internship Project / Full Stack Web Application with Flask Framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sweetalert2": "^11.7.27"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}
